@@ -12,11 +12,13 @@ import App from './App.jsx'
 import './assets/styles/index.css'
 import './assets/styles/bootstrap.custom.css'
 import HomeScreen from './screens/home.screen.jsx'
+import ProductScreen from './screens/product.screen.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index path='' element={<HomeScreen />} />
+      <Route index path='/product/:id' element={<ProductScreen />} />
     </Route>
   )
 )
