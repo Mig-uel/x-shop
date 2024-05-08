@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
   createRoutesFromElements,
+  Link,
   Route,
   RouterProvider,
 } from 'react-router-dom'
@@ -17,8 +18,8 @@ import ProductScreen from './screens/product.screen.jsx'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route index path='' element={<HomeScreen />} />
-      <Route path='/product/:id' element={<ProductScreen />} />
+      <Route index element={<HomeScreen />} />
+      <Route path='product/:id' element={<ProductScreen />} />
     </Route>
   )
 )
