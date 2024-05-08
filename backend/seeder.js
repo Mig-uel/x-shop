@@ -10,6 +10,7 @@ const products = require('./data/data')
 // mongoose model
 const User = require('./models/user.model')
 const Product = require('./models/product.model')
+const Order = require('./models/order.model')
 
 // mongodb connection
 const connectDB = require('./config/db')
@@ -40,7 +41,7 @@ const importData = async () => {
 
     process.exit()
   } catch (error) {
-    console.error(`${error}.red.inverse`)
+    console.error(`${error}`.red.inverse)
     process.exit(1)
   }
 }
