@@ -18,6 +18,8 @@
     "start": "node ./backend/server.js",
     "server": "nodemon ./backend/server.js",
     "client": "cd ./frontend && yarn dev",
-    "dev": "concurrently \"yarn server\" \"yarn client\""
+    "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "data:import": "node ./backend/seeder.js",
+    "data:destroy": "node ./backend/seeder.js -d"
   }
 }
