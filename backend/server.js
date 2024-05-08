@@ -18,5 +18,5 @@ app.get('/api/products/:id', (req, res) => {
 })
 
 app.listen(port, () =>
-  console.log(`SERVER STARTED ON PORT: ${port}`.blue.inverse)
+  console.log(`SERVER STARTED ON PORT: ${port}`.green.inverse)
 )
