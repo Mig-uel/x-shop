@@ -6,7 +6,7 @@ const products = require('./data/data')
 
 dotenv.config()
 const port = process.env.PORT || 5000
-connectDB() // MongoDB connection
+connectDB() // start mongodb connection
 const app = express()
 
 app.get('/api/products', (req, res) => res.json(products))
@@ -17,4 +17,6 @@ app.get('/api/products/:id', (req, res) => {
   res.status(200).json(product)
 })
 
-app.listen(port, () => console.log(`SERVER STARTED ON PORT: ${port}`.blue))
+app.listen(port, () =>
+  console.log(`SERVER STARTED ON PORT: ${port}`.blue.inverse)
+)
