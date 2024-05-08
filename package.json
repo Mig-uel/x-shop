@@ -1,7 +1,7 @@
 {
   "name": "x-shop",
   "version": "1.0.0",
-  "main": "./backend/server.js",
+  "main": "server.js",
   "license": "MIT",
   "dependencies": {
     "colors": "^1.4.0",
@@ -12,7 +12,9 @@
     "nodemon": "^3.1.0"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "node ./backend/server.js",
+    "server": "nodemon ./backend/server.js",
+    "client": "cd ./frontend && yarn dev",
+    "dev": "concurrently \"yarn server\" \"yarn client\""
   }
 }
