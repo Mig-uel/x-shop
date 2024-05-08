@@ -22,6 +22,7 @@ const reviewSchema = mongoose.Schema(
     createdAt: {
       type: Date,
       default: () => Date.now(),
+      immutable: true,
     },
   },
   { timestamps: true }
