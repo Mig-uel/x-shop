@@ -1,7 +1,7 @@
+import { useState } from 'react'
 import { useLoaderData } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
 import Product from '../components/product.component'
-import { useState } from 'react'
 
 const HomeScreen = () => {
   const data = useLoaderData()
