@@ -10,9 +10,9 @@ const orderSchema = new mongoose.Schema(
     orderItems: [
       {
         name: { type: String, required: true },
-        qty: { type: Number, required: true },
+        qty: { type: Number, required: true, min: 1 },
         image: { type: String, required: true },
-        price: { type: Number, required: true },
+        price: { type: Number, required: true, min: 0 },
         product: {
           type: mongoose.SchemaTypes.ObjectId,
           required: true,
@@ -23,7 +23,14 @@ const orderSchema = new mongoose.Schema(
     shippingAddress: {
       address: { type: String, required: true },
       city: { type: String, required: true },
-      postalCode: { type: String, required: true },
+      postalCode: {
+        type: String,
+        required: true,
+        validate: {
+          validator: (v) => v.length === 5,
+          message: ({ value }) => `Postal code is invalid`,
+        },
+      },
       country: { type: String, required: true },
     },
     paymentMethod: {
