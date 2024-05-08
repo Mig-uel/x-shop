@@ -6,4 +6,4 @@ const app = express()
 
 app.get('/', (req, res) => {})
 
-app.listen(port, () => console.log(`SERVER STARTED ON PORT: ${port}`))
+app.listen(port, () => console.log(`SERVER STARTED ON PORT: ${port}`.magenta))
