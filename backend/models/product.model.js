@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const reviewSchema = mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.SchemaTypes.ObjectId,
       required: true,
       ref: 'User',
     },
@@ -26,7 +26,7 @@ const reviewSchema = mongoose.Schema(
 const productSchema = new mongoose.Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: mongoose.SchemaTypes.ObjectId,
       required: true,
       ref: 'User',
     },
