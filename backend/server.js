@@ -1,13 +1,14 @@
 const express = require('express')
 const colors = require('colors')
 const dotenv = require('dotenv')
-const products = require('./data')
+const connectDB = require('./config/db')
+const products = require('./data/data')
 
 dotenv.config()
 const port = process.env.PORT || 5000
+connectDB() // MongoDB connection
 const app = express()
 
-app.get('/', (req, res) => res.send('Hi'))
 app.get('/api/products', (req, res) => res.json(products))
 app.get('/api/products/:id', (req, res) => {
   const { id } = req.params
@@ -16,4 +17,4 @@ app.get('/api/products/:id', (req, res) => {
   res.status(200).json(product)
 })
 
-app.listen(port, () => console.log(`SERVER STARTED ON PORT: ${port}`.magenta))
+app.listen(port, () => console.log(`SERVER STARTED ON PORT: ${port}`.blue))
