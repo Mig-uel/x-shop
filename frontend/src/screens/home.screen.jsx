@@ -1,8 +1,12 @@
+import { useLoaderData } from 'react-router-dom'
 import { Row, Col } from 'react-bootstrap'
-import products from '../products'
 import Product from '../components/product.component'
+import { useState } from 'react'
 
 const HomeScreen = () => {
+  const data = useLoaderData()
+  const [products, setProducts] = useState(data)
+
   return (
     <>
       <h1>Latest Products</h1>
