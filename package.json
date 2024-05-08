@@ -1,7 +1,7 @@
 {
   "name": "x-shop",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "./backend/server.js",
   "license": "MIT",
   "dependencies": {
     "colors": "^1.4.0",
