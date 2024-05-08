@@ -1,11 +1,11 @@
-import { Link, useParams } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useParams, useLoaderData } from 'react-router-dom'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
-import products from '../products'
 import Rating from '../components/rating.component'
 
 const ProductScreen = () => {
-  const { id: productId } = useParams()
-  const product = products.find((p) => p._id === productId)
+  const data = useLoaderData()
+  const [product, setProduct] = useState(data)
 
   return (
     <>
