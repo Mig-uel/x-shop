@@ -13,6 +13,12 @@ const app = express() // init express obj
 
 app.use('/api/products', productRoutes)
 
+// TODO: Create custom async error handler
+// custom async error handler
+// app.use((error, req, res, next) => {
+//   res.status(500).json({ error: error.message })
+// })
+
 app.listen(port, () =>
   console.log(`SERVER STARTED ON PORT: ${port}`.green.inverse)
 )
