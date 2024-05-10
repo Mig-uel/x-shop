@@ -21,11 +21,7 @@ import ProductScreen from './screens/product.screen.jsx'
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
-      <Route
-        index
-        element={<HomeScreen />}
-        loader={async () => fetch('/api/products')}
-      />
+      <Route index element={<HomeScreen />} />
       <Route
         path='product/:id'
         element={<ProductScreen />}
