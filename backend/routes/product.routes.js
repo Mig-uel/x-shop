@@ -9,7 +9,7 @@ const {
 // init router object
 const router = express.Router()
 
-router.get('/', getProducts)
-router.get('/:id', getSingleProduct)
+router.route('/').get(getProducts)
+router.route('/:id').get(getSingleProduct)
 
 module.exports = router
