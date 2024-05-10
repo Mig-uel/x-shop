@@ -6,8 +6,6 @@
 
 /**
  * The base URL for making API requests.
- * If the environment is set to development, the base URL is 'http://localhost:5000'.
- * If the environment is not set to development, the base URL is an empty string.
  *
  * @constant {string}
  */
