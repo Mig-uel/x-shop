@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-// api slice
-import { apiSlice } from './api/apiSlice.api'
+// API Slice
+import { apiSlice } from './api/apiSlice'
 
 export default configureStore({
   reducer: {
