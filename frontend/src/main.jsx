@@ -22,11 +22,7 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index element={<HomeScreen />} />
-      <Route
-        path='product/:id'
-        element={<ProductScreen />}
-        loader={async ({ params: { id } }) => fetch(`/api/products/${id}`)}
-      />
+      <Route path='product/:id' element={<ProductScreen />} />
     </Route>
   )
 )
