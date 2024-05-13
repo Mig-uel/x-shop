@@ -1,7 +1,10 @@
 import { useGetProductsQuery } from '../store/api/productsEndpoints.api'
+
+// UI Components
 import { Row, Col } from 'react-bootstrap'
 import Product from '../components/product.component'
 import Loader from '../components/loader.component'
+import Message from '../components/message.component'
 
 const HomeScreen = () => {
   const { data: products, isLoading, error } = useGetProductsQuery()
@@ -13,7 +16,9 @@ const HomeScreen = () => {
       {isLoading ? (
         <Loader />
       ) : error ? (
-        <p>{error?.data?.message || error?.error}</p>
+        <Message variant='danger'>
+          {error?.data?.message || error?.error}
+        </Message>
       ) : (
         <Row>
           {products.map((product) => (
