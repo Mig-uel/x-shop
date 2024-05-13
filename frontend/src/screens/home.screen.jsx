@@ -1,6 +1,7 @@
 import { useGetProductsQuery } from '../store/api/productsEndpoints.api'
 import { Row, Col } from 'react-bootstrap'
 import Product from '../components/product.component'
+import Loader from '../components/loader.component'
 
 const HomeScreen = () => {
   const { data: products, isLoading, error } = useGetProductsQuery()
@@ -10,7 +11,7 @@ const HomeScreen = () => {
       <h1>Latest Products</h1>
 
       {isLoading ? (
-        <p>Loading...</p>
+        <Loader />
       ) : error ? (
         <p>{error?.data?.message || error?.error}</p>
       ) : (

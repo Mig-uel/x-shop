@@ -1,7 +1,8 @@
+import { useParams, Link } from 'react-router-dom'
 import { useGetProductByIdQuery } from '../store/api/productsEndpoints.api'
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap'
 import Rating from '../components/rating.component'
-import { useParams, Link } from 'react-router-dom'
+import Loader from '../components/loader.component'
 
 const ProductScreen = () => {
   const { id } = useParams()
@@ -14,7 +15,7 @@ const ProductScreen = () => {
       </Link>
 
       {isLoading ? (
-        <p>Loading</p>
+        <Loader />
       ) : error ? (
         <p>{error?.data?.message || error?.error}</p>
       ) : (
