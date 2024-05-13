@@ -16,7 +16,7 @@ export const BASE_URL = ''
  *
  * @constant {string}
  */
-export const PRODUCTS_URL = '/api/products'
+export const PRODUCTS_URL = '/api/products/'
 
 /**
  * The URL for the users API.
