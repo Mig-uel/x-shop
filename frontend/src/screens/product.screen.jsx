@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, useNavigate } from 'react-router-dom'
 import { useGetProductByIdQuery } from '../store/api/productsEndpoints.api'
 import { addToCart } from '../store/cart/cartSlice'
 import { useDispatch } from 'react-redux'
@@ -12,12 +12,15 @@ import Message from '../components/message.component'
 
 const ProductScreen = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { data: product, isLoading, error } = useGetProductByIdQuery(id)
   const dispatch = useDispatch()
   const [quantity, setQuantity] = useState(1)
 
-  const addToCartHandler = () =>
+  const addToCartHandler = () => {
     dispatch(addToCart({ ...product, qty: quantity }))
+    navigate('/cart')
+  }
 
   return (
     <>
