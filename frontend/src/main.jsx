@@ -15,14 +15,18 @@ import store from './store/store.js'
 // styles
 import './assets/styles/index.css'
 import './assets/styles/bootstrap.custom.css'
+
+// screens/routes
 import HomeScreen from './screens/home.screen.jsx'
 import ProductScreen from './screens/product.screen.jsx'
+import CartScreen from './screens/cart.screen.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path='/' element={<App />}>
       <Route index element={<HomeScreen />} />
       <Route path='product/:id' element={<ProductScreen />} />
+      <Route path='cart' element={<CartScreen />} />
     </Route>
   )
 )
