@@ -15,7 +15,7 @@ const CartScreen = () => {
   const totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0)
 
   const addToCartHandler = (item, qty) => dispatch(addToCart({ ...item, qty }))
-
+      
   return (
     <Row>
       <Col md={8}>
