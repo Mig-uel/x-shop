@@ -14,8 +14,7 @@ const CartScreen = () => {
   const { cartItems, itemsPrice } = useSelector(({ cart }) => cart)
   const totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0)
 
-  const addToCartHandler = (item, value) =>
-    dispatch(addToCart({ ...item, qty: value }))
+  const addToCartHandler = (item, qty) => dispatch(addToCart({ ...item, qty }))
 
   return (
     <Row>
