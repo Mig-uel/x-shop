@@ -11,12 +11,8 @@ const CartScreen = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const { cartItems } = useSelector(({ cart }) => cart)
+  const { cartItems, itemsPrice } = useSelector(({ cart }) => cart)
   const totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0)
-  const subtotal = cartItems.reduce(
-    (acc, item) => acc + item.price * item.qty,
-    0
-  )
 
   const addToCartHandler = (item, value) =>
     dispatch(addToCart({ ...item, qty: value }))
@@ -71,7 +67,7 @@ const CartScreen = () => {
         <Card>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>Subtotal ({totalItems}) Items</h2>${subtotal.toFixed(2)}
+              <h2>Subtotal ({totalItems}) Items</h2>${itemsPrice}
             </ListGroup.Item>
             <ListGroup.Item>
               <Row>
