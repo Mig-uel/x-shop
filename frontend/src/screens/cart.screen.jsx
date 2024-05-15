@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { addToCart } from '../store/cart/cartSlice'
+import { addToCart, removeFromCart } from '../store/cart/cartSlice'
 
 // UI Components
 import { FaTrash } from 'react-icons/fa'
@@ -15,7 +15,7 @@ const CartScreen = () => {
   const totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0)
 
   const addToCartHandler = (item, qty) => dispatch(addToCart({ ...item, qty }))
-      
+
   return (
     <Row>
       <Col md={8}>
@@ -52,7 +52,11 @@ const CartScreen = () => {
                     </Form.Control>
                   </Col>
                   <Col md={2}>
-                    <Button type='button' variant='light'>
+                    <Button
+                      type='button'
+                      variant='light'
+                      onClick={() => dispatch(removeFromCart(item._id))}
+                    >
                       <FaTrash />
                     </Button>
                   </Col>
