@@ -15,6 +15,7 @@ const CartScreen = () => {
   const totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0)
 
   const addToCartHandler = (item, qty) => dispatch(addToCart({ ...item, qty }))
+  const removeFromCartHandler = (id) => dispatch(removeFromCart(id))
 
   return (
     <Row>
@@ -55,7 +56,7 @@ const CartScreen = () => {
                     <Button
                       type='button'
                       variant='light'
-                      onClick={() => dispatch(removeFromCart(item._id))}
+                      onClick={() => removeFromCartHandler(item._id)}
                     >
                       <FaTrash />
                     </Button>
