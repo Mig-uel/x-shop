@@ -14,8 +14,10 @@ const CartScreen = () => {
   const { cartItems, itemsPrice } = useSelector(({ cart }) => cart)
   const totalItems = cartItems.reduce((acc, item) => acc + item.qty, 0)
 
+  // Handlers
   const addToCartHandler = (item, qty) => dispatch(addToCart({ ...item, qty }))
   const removeFromCartHandler = (id) => dispatch(removeFromCart(id))
+  const checkoutHandler = () => navigate('/login?redirect=/shipping')
 
   return (
     <Row>
@@ -78,7 +80,7 @@ const CartScreen = () => {
                 <Button
                   className='btn-block'
                   type='button'
-                  onClick={() => navigate('/checkout')}
+                  onClick={() => checkoutHandler()}
                   disabled={cartItems.length === 0}
                 >
                   Proceed to Checkout
