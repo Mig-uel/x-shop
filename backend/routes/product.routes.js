@@ -1,10 +1,10 @@
 const express = require('express')
 
-// controller
+// controllers
 const {
   getProducts,
   getSingleProduct,
-} = require('../controllers/product/get.product.controller')
+} = require('../controllers/product.controller')
 
 // init router object
 const router = express.Router()
