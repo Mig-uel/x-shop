@@ -3,8 +3,9 @@ const colors = require('colors')
 const dotenv = require('dotenv')
 const connectDB = require('./config/db')
 
-// router
+// routers
 const productRoutes = require('./routes/product.routes')
+const userRoutes = require('./routes/user.routes')
 
 // middleware
 const { notFound, errorHandler } = require('./middleware/error.middleware')
@@ -14,8 +15,9 @@ const port = process.env.PORT || 5000
 connectDB() // start mongodb connection
 const app = express() // init express obj
 
-// main api route
+// main api routes
 app.use('/api/products', productRoutes)
+app.use('/api/users', userRoutes)
 
 // custom error handler
 app.use(notFound)
