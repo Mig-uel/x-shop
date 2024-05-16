@@ -20,7 +20,7 @@ const authUser = asyncHandler(async (req, res) => {
  */
 
 const registerUser = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: 'logout route' })
+  res.status(200).json({ message: 'register user route' })
 })
 
 /**
@@ -72,7 +72,9 @@ const getAllUsers = asyncHandler(async (req, res) => {
  */
 
 const getUserById = asyncHandler(async (req, res) => {
-  res.status(200).json({ admin: 'get user by id route' })
+  const { id } = req.params
+
+  res.status(200).json({ admin: 'get user by id route', id })
 })
 
 /**
@@ -82,7 +84,9 @@ const getUserById = asyncHandler(async (req, res) => {
  */
 
 const deleteUser = asyncHandler(async (req, res) => {
-  res.status(200).json({ admin: 'delete user route' })
+  const { id } = req.params
+
+  res.status(200).json({ admin: 'delete user route', id })
 })
 
 /**
@@ -92,7 +96,9 @@ const deleteUser = asyncHandler(async (req, res) => {
  */
 
 const updateUser = asyncHandler(async (req, res) => {
-  res.status(200).json({ admin: 'update user route' })
+  const { id } = req.params
+
+  res.status(200).json({ admin: 'update user route', id })
 })
 
 module.exports = {
