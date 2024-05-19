@@ -3,7 +3,6 @@ const asyncHandler = require('./asyncHandler.middleware')
 const User = require('../models/user.model')
 
 /** ------ PROTECT ROUTES ------ */
-
 const protect = asyncHandler(async (req, res, next) => {
   let token
   token = req.cookies.jwt // access/read the JWT cookie
