@@ -20,6 +20,14 @@ const authUser = asyncHandler(async (req, res) => {
       expiresIn: '30d',
     }) // create token
 
+    /** ---- SET JWT AS HTTP-ONLY COOKIE */
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: true && process.env.NODE_ENV === 'production', // set to true only in production
+      sameSite: 'strict',
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    })
+
     return res.status(201).json({ _id, name, email, isAdmin })
   } else {
     res.status(401)
