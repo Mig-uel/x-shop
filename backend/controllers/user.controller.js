@@ -13,6 +13,7 @@ const authUser = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email }) // find one that matches the email
 
+  // use instance method to check if password is a match
   if (user && (await user.matchPassword(password))) {
     const { _id, name, isAdmin } = user
 
