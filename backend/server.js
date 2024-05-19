@@ -1,4 +1,5 @@
 const express = require('express')
+const cookieParser = require('cookie-parser')
 const colors = require('colors')
 const dotenv = require('dotenv')
 const connectDB = require('./config/db')
@@ -18,6 +19,7 @@ const app = express() // init express obj
 // middleware
 app.use(express.json()) // body parser
 app.use(express.urlencoded({ extended: true })) // body parser
+app.use(cookieParser()) // cookie parser
 
 // main api routes
 app.use('/api/products', productRoutes)
