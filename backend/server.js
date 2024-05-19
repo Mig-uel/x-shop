@@ -15,6 +15,10 @@ const port = process.env.PORT || 5000
 connectDB() // start mongodb connection
 const app = express() // init express obj
 
+// middleware
+app.use(express.json()) // body parser
+app.use(express.urlencoded()) // body parser
+
 // main api routes
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
