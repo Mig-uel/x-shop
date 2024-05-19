@@ -13,7 +13,7 @@ const protect = asyncHandler(async (req, res, next) => {
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET) // decode token
 
       // assign to req object an object 'user' and value of the User object from db
-      req.user = await User.findById(decoded.userId).select('-password')
+      req.user = await User.findById(decodedToken.userId).select('-password')
       next()
     } catch (e) {
       res.status(401)
