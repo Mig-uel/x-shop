@@ -62,7 +62,11 @@ const logoutUser = asyncHandler(async (req, res) => {
  */
 
 const getUserProfile = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: 'get user profile route' })
+  const { _id, name, email, isAdmin } = req.user
+  res.status(200).json({
+    message: 'get user profile route',
+    user: { _id, name, email, isAdmin },
+  })
 })
 
 /**
