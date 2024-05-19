@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken')
 const asyncHandler = require('../middleware/asyncHandler.middleware')
 const User = require('../models/user.model')
 
@@ -9,13 +10,15 @@ const User = require('../models/user.model')
  * @access  Public
  */
 const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body
-
+  const { email, password } = req.body // destructure email and password from request body
   const user = await User.findOne({ email }) // find one that matches the email
 
-  // use instance method to check if password is a match
+  // check if user exists and use instance method to check if password is a match
   if (user && (await user.matchPassword(password))) {
-    const { _id, name, isAdmin } = user
+    const { _id, name, isAdmin } = user // destructure _id, name, isAdmin from User
+    const token = jwt.sing({ userId: _id }, process.env.JWT_SECRET, {
+      expiresIn: '30d',
+    }) // create token
 
     return res.status(201).json({ _id, name, email, isAdmin })
   } else {
