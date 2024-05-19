@@ -8,13 +8,12 @@ const User = require('../models/user.model')
  * @route   POST /api/users/login
  * @access  Public
  */
-
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body
 
   const user = await User.findOne({ email }) // find one that matches the email
 
-  if (user) {
+  if (user && (await user.matchPassword(password))) {
     const { _id, name, isAdmin } = user
 
     return res.status(201).json({ _id, name, email, isAdmin })
