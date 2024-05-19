@@ -10,7 +10,18 @@ const User = require('../models/user.model')
  */
 
 const authUser = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: 'auth user route' })
+  const { email, password } = req.body
+
+  const user = await User.findOne({ email }) // find one that matches the email
+
+  if (user) {
+    const { _id, name, isAdmin } = user
+
+    return res.status(201).json({ _id, name, email, isAdmin })
+  } else {
+    res.status(401)
+    throw new Error('Invalid email or password!')
+  }
 })
 
 /**
