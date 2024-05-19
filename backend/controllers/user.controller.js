@@ -16,7 +16,7 @@ const authUser = asyncHandler(async (req, res) => {
   // check if user exists and use instance method to check if password is a match
   if (user && (await user.matchPassword(password))) {
     const { _id, name, isAdmin } = user // destructure _id, name, isAdmin from User
-    const token = jwt.sing({ userId: _id }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ userId: _id }, process.env.JWT_SECRET, {
       expiresIn: '30d',
     }) // create token
 
