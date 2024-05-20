@@ -5,7 +5,7 @@ const User = require('../models/user.model')
 /** -------- USER ROUTES -------- **/
 
 /**
- * @desc    Auth user & get token
+ * @desc    Auth user & set token
  * @route   POST /api/users/login
  * @access  Public
  */
