@@ -40,7 +40,6 @@ const authUser = asyncHandler(async (req, res) => {
  * @route   POST /api/users
  * @access  Public
  */
-
 const registerUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'register user route' })
 })
@@ -50,7 +49,6 @@ const registerUser = asyncHandler(async (req, res) => {
  * @route   POST /api/users/logout
  * @access  Private
  */
-
 const logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'logout user route' })
 })
@@ -60,7 +58,6 @@ const logoutUser = asyncHandler(async (req, res) => {
  * @route   GET /api/users/profile
  * @access  Private
  */
-
 const getUserProfile = asyncHandler(async (req, res) => {
   const { _id, name, email, isAdmin } = req.user
   res.status(200).json({
@@ -74,7 +71,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
  * @route   PATCH /api/users
  * @access  Private
  */
-
 const updateUserProfile = asyncHandler(async (req, res) => {
   res.status(200).json({ message: 'update user profile route' })
 })
@@ -86,7 +82,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
  * @route   GET /api/users
  * @access  Private/Admin
  */
-
 const getAllUsers = asyncHandler(async (req, res) => {
   res.status(200).json({ admin: 'get users route' })
 })
@@ -96,7 +91,6 @@ const getAllUsers = asyncHandler(async (req, res) => {
  * @route   GET /api/users
  * @access  Private/Admin
  */
-
 const getUserById = asyncHandler(async (req, res) => {
   const { id } = req.params
 
@@ -108,7 +102,6 @@ const getUserById = asyncHandler(async (req, res) => {
  * @route   DELETE /api/users/:id
  * @access  Private/Admin
  */
-
 const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.params
 
@@ -120,7 +113,6 @@ const deleteUser = asyncHandler(async (req, res) => {
  * @route   PATCH /api/users/:id
  * @access  Private/Admin
  */
-
 const updateUser = asyncHandler(async (req, res) => {
   const { id } = req.params
 
