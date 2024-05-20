@@ -19,15 +19,19 @@ const {
 // init router obj
 const router = express.Router()
 
-router.route('/').post(registerUser).get(getAllUsers)
+router.route('/').post(registerUser).get(protect, admin, getAllUsers)
 router
   .route('/profile')
   .get(protect, getUserProfile)
   .patch(protect, updateUserProfile)
 router.post('/logout', logoutUser)
-router.post('/login', authUser)
+router.post('/auth', authUser)
 
 /** -------- ADMIN ROUTES -------- **/
-router.route('/:id').delete(deleteUser).get(getUserById).patch(updateUser)
+router
+  .route('/:id')
+  .delete(protect, admin, deleteUser)
+  .get(protect, admin, getUserById)
+  .patch(protect, admin, updateUser)
 
 module.exports = router
