@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken')
+const generateToken = require('../utils/generateToken.utils')
 const asyncHandler = require('../middleware/asyncHandler.middleware')
 const User = require('../models/user.model')
 
@@ -15,18 +15,9 @@ const authUser = asyncHandler(async (req, res) => {
 
   // check if user exists and use instance method to check if password is a match
   if (user && (await user.matchPassword(password))) {
-    const { _id, name, isAdmin } = user // destructure _id, name, isAdmin from User
-    const token = jwt.sign({ userId: _id }, process.env.JWT_SECRET, {
-      expiresIn: '30d',
-    }) // create token
+    const { _id, name, email, isAdmin } = user // destructure _id, name, isAdmin from User
 
-    /** ---- SET JWT AS HTTP-ONLY COOKIE */
-    res.cookie('jwt', token, {
-      httpOnly: true,
-      secure: true && process.env.NODE_ENV === 'production', // set to true only in production
-      sameSite: 'strict',
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    })
+    generateToken(res, _id) // set token cookie
 
     return res.status(201).json({ _id, name, email, isAdmin })
   } else {
@@ -58,11 +49,10 @@ const registerUser = asyncHandler(async (req, res) => {
   })
 
   if (user) {
-    res
-      .status(200)
-      .json(
-        await User.findOne({ email }).select('_id name email isAdmin')
-      )
+    const { _id, name, email, isAdmin } = user // destructure _id, name, isAdmin from User
+
+    generateToken(res, _id) // set token cookie
+    res.status(200).json({ _id, name, email, isAdmin })
   } else {
   }
 })
