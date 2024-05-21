@@ -5,13 +5,13 @@ import { saveShippingAddress } from '../store/cart/cartSlice'
 
 /** UI Elements */
 import { Row, Col, Form, Button } from 'react-bootstrap'
+import Steps from '../components/steps.component'
 import FormContainer from '../components/form-container.component'
 
 const ShippingScreen = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { shippingAddress } = useSelector(({ cart }) => cart)
-  console.log(shippingAddress)
 
   const [address, setAddress] = useState(shippingAddress?.address || '')
   const [city, setCity] = useState(shippingAddress?.city || '')
@@ -28,6 +28,7 @@ const ShippingScreen = () => {
 
   return (
     <FormContainer>
+      <Steps step1 step2 />
       <h1>Shipping</h1>
 
       <Form onSubmit={submitHandler}>
