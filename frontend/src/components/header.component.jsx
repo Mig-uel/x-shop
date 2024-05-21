@@ -1,5 +1,8 @@
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
+import { removeCredentials } from '../store/auth/authSlice'
+import { useLogoutMutation } from '../store/api/usersEndpoints.api'
 
 // UI Components
 import { Navbar, Nav, Container, Badge, NavDropdown } from 'react-bootstrap'
@@ -7,10 +10,22 @@ import { FaShoppingCart, FaUser } from 'react-icons/fa'
 import logo from '../assets/logo.png'
 
 const Header = () => {
+  const [logout] = useLogoutMutation()
   const { cartItems } = useSelector(({ cart }) => cart)
   const { userInfo } = useSelector(({ auth }) => auth)
 
-  const logoutHandler = () => {}
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const logoutHandler = async () => {
+    try {
+      await logout().unwrap()
+      dispatch(removeCredentials())
+      navigate('/login')
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <header>
