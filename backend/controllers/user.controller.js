@@ -90,7 +90,24 @@ const getUserProfile = asyncHandler(async (req, res) => {
  * @access  Private
  */
 const updateUserProfile = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: 'update user profile route' })
+  const { _id } = req.user // destructure _id property from req.user object
+  const user = await User.findById(_id) // find a user by _id
+
+  if (user) {
+    // update user properties if sent in body of request
+    user.name = req.body.name || user.name
+    user.email = req.body.email || user.email
+
+    if (req.body.password) user.password = req.body.password
+
+    const updatedUser = await user.save()
+    const { name, email, isAdmin } = updatedUser
+
+    res.status(200).json({ message: 'User updated', _id, name, email, isAdmin })
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
 })
 
 /** -------- ADMIN ROUTES -------- **/
