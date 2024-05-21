@@ -21,15 +21,25 @@ const LoginScreen = () => {
   const searchParams = new URLSearchParams(search) // handle query string
   const redirect = searchParams.get('redirect') || '/' // will be '/shipping' or '/'
 
-  const [login, { data, error, isLoading }] = useLoginMutation()
+  const [login, { isLoading }] = useLoginMutation()
   const { userInfo } = useSelector(({ auth }) => auth) // userInfo state
 
   useEffect(() => {
     if (userInfo) navigate(redirect)
   }, [userInfo, redirect, navigate])
 
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault()
+
+    try {
+      const res = await login({ email, password }).unwrap()
+      dispatch(setCredentials(res))
+      navigate(redirect)
+    } catch (error) {
+      console.log(error)
+
+      toast.error(error?.data?.message || error?.error)
+    }
   }
 
   return (
@@ -57,13 +67,23 @@ const LoginScreen = () => {
         </Form.Group>
 
         <Row>
-          <Button type='submit' variant='primary' className='mt-2'>
-            Sign In
+          <Button
+            type='submit'
+            variant='primary'
+            className='mt-2'
+            disabled={isLoading}
+          >
+            {isLoading ? <Loader width={'25px'} height={'25px'} /> : 'Sign In'}
           </Button>
         </Row>
         <Row>
           <Col className='mt-2'>
-            New Customer? <Link to='/register'>Register</Link>
+            New Customer?{' '}
+            <Link
+              to={redirect ? `/register?redirect=${redirect}` : `/register`}
+            >
+              Register
+            </Link>
           </Col>
         </Row>
       </Form>
