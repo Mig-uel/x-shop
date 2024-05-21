@@ -1,17 +1,35 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCredentials } from '../store/auth/authSlice'
+import { useLoginMutation } from '../store/api/usersEndpoints.api'
 
 /** UI Components */
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button, Row, Col, Toast } from 'react-bootstrap'
 import FormContainer from '../components/form-container.component'
+import Loader from '../components/loader.component'
+import { toast } from 'react-toastify'
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const { search } = useLocation() // get query string for current url
+  const searchParams = new URLSearchParams(search) // handle query string
+  const redirect = searchParams.get('redirect') || '/' // will be '/shipping' or '/'
+
+  const [login, { data, error, isLoading }] = useLoginMutation()
+  const { userInfo } = useSelector(({ auth }) => auth) // userInfo state
+
+  useEffect(() => {
+    if (userInfo) navigate(redirect)
+  }, [userInfo, redirect, navigate])
+
   const submitHandler = (e) => {
     e.preventDefault()
-    console.log('Submitted')
   }
 
   return (
