@@ -77,11 +77,14 @@ const logoutUser = asyncHandler(async (req, res) => {
  * @access  Private
  */
 const getUserProfile = asyncHandler(async (req, res) => {
-  const { _id, name, email, isAdmin } = req.user
-  res.status(200).json({
-    message: 'get user profile route',
-    user: { _id, name, email, isAdmin },
-  })
+  if (req.user) {
+    const { _id, name, email, isAdmin } = req.user // destructure from req.user object
+
+    res.status(200).json({ _id, name, email, isAdmin })
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
 })
 
 /**
