@@ -24,8 +24,7 @@ const Header = () => {
             <Nav className='ms-auto'>
               <LinkContainer to='/cart'>
                 <Nav.Link>
-                  <FaShoppingCart />
-                  Cart
+                  <FaShoppingCart /> Cart
                   {cartItems.length > 0 && (
                     <Badge pill bg='success' style={{ marginLeft: '5px' }}>
                       {cartItems.reduce((acc, item) => acc + item.qty, 0)}
@@ -35,8 +34,7 @@ const Header = () => {
               </LinkContainer>
               <LinkContainer to='/login'>
                 <Nav.Link>
-                  <FaUser />
-                  Login
+                  <FaUser /> Login
                 </Nav.Link>
               </LinkContainer>
             </Nav>
