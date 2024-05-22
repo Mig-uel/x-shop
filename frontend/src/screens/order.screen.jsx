@@ -33,6 +33,33 @@ const OrderScreen = () => {
     error: errorPayPalClientId,
   } = useGetPayPalClientIdQuery()
 
+  useEffect(() => {
+    if (!errorPayPalClientId && !isLoadingPayPalClientId && paypalClientId) {
+      const loadPayPalScript = async () => {
+        paypalDispatch({
+          type: 'resetOptions',
+          value: {
+            'client-id': paypalClientId.clientId,
+            currency: 'USD',
+          },
+        })
+        paypalDispatch({ type: 'setLoadingStatus', value: 'pending' })
+      }
+
+      if (order && !order.isPaid) {
+        if (!window.paypal) {
+          loadPayPalScript()
+        }
+      }
+    }
+  }, [
+    order,
+    errorPayPalClientId,
+    isLoadingPayPalClientId,
+    paypalClientId,
+    paypalDispatch,
+  ])
+
   return isLoading ? (
     <Loader />
   ) : error ? (
