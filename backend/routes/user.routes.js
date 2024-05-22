@@ -1,9 +1,10 @@
-const express = require('express')
+/** Initialize Express Router */
+const router = require('express').Router()
 
-// middleware
+/** Middleware */
 const { protect, admin } = require('../middleware/auth.middleware')
 
-// controllers
+/** User Controllers */
 const {
   authUser,
   registerUser,
@@ -16,10 +17,8 @@ const {
   updateUser,
 } = require('../controllers/user.controller')
 
-// init router obj
-const router = express.Router()
-
-router.route('/').post(registerUser).get(protect, admin, getAllUsers)
+/** ------ USER ROUTES ------ */
+router.route('/').post(registerUser)
 router
   .route('/profile')
   .get(protect, getUserProfile)
@@ -27,7 +26,8 @@ router
 router.post('/logout', logoutUser)
 router.post('/auth', authUser)
 
-/** -------- ADMIN ROUTES -------- **/
+/** ------ ADMIN ROUTES ------ */
+router.route('/').get(protect, admin, getAllUsers)
 router
   .route('/:id')
   .delete(protect, admin, deleteUser)
