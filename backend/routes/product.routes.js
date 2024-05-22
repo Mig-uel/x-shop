@@ -1,13 +1,11 @@
-const express = require('express')
+/** Initialize Express Router */
+const router = require('express').Router()
 
-// controllers
+/** Product Controllers */
 const {
   getProducts,
   getSingleProduct,
 } = require('../controllers/product.controller')
-
-// init router object
-const router = express.Router()
 
 router.route('/').get(getProducts)
 router.route('/:id').get(getSingleProduct)
