@@ -1,9 +1,17 @@
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useParams } from 'react-router-dom'
-import { useGetOrderDetailsQuery } from '../store/api/ordersEndpoints.api'
+import {
+  useGetOrderDetailsQuery,
+  usePayOrderMutation,
+  useGetPayPalClientIdQuery,
+} from '../store/api/ordersEndpoints.api'
+import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 
 /** UI Elements */
 import Message from '../components/message.component'
 import Loader from '../components/loader.component'
+import { toast } from 'react-toastify'
 import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
 
 const OrderScreen = () => {
@@ -14,6 +22,16 @@ const OrderScreen = () => {
     isLoading,
     error,
   } = useGetOrderDetailsQuery(orderId)
+
+  /** Payment */
+  const [payOrder, { isLoading: isLoadingPayment }] = usePayOrderMutation()
+  const [{ isPending }, paypalDispatch] = usePayPalScriptReducer()
+  const { userInfo } = useSelector(({ auth }) => auth)
+  const {
+    data: paypalClientId,
+    isLoading: isLoadingPayPalClientId,
+    error: errorPayPalClientId,
+  } = useGetPayPalClientIdQuery()
 
   return isLoading ? (
     <Loader />
