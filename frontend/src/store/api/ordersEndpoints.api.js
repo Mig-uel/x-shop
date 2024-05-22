@@ -22,7 +22,7 @@ export const ordersApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getPayPalClientId: builder.query({
-      query: PAYPAL_URL,
+      query: () => PAYPAL_URL,
       keepUnusedDataFor: 5,
     }),
   }),
