@@ -1,9 +1,8 @@
-const generateToken = require('../utils/generateToken.utils')
-const asyncHandler = require('../middleware/asyncHandler.middleware')
 const User = require('../models/user.model')
+const asyncHandler = require('../middleware/asyncHandler.middleware')
+const generateToken = require('../utils/generateToken.utils')
 
-/** -------- USER ROUTES -------- **/
-
+/** ------ USER ROUTES ------ */
 /**
  * @desc    Auth user & set token
  * @route   POST /api/users/login
@@ -113,8 +112,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 })
 
-/** -------- ADMIN ROUTES -------- **/
-
+/** ------ ADMIN ROUTES ------ */
 /**
  * @desc    Get all users
  * @route   GET /api/users
