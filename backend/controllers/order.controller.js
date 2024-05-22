@@ -8,7 +8,39 @@ const asyncHandler = require('../middleware/asyncHandler.middleware')
  * @access  Private
  */
 const addOrderItems = asyncHandler(async (req, res) => {
-  res.send('add order item')
+  const { _id } = req.user
+  const {
+    orderItems,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+  } = req.body
+
+  if (orderItems && orderItems.length == 0) {
+    res.status(400)
+    throw new Error('No order items')
+  } else {
+    const order = new Order({
+      user: _id,
+      shippingAddress,
+      paymentMethod,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+      orderItems: orderItems.map((item) => ({
+        ...item,
+        product: item._id,
+        _id: undefined,
+      })),
+    })
+
+    const createdOrder = await order.save()
+    res.status(201).json(createdOrder)
+  }
 })
 
 /**
