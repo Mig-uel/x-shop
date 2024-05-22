@@ -34,12 +34,16 @@ const OrderScreen = () => {
   } = useGetPayPalClientIdQuery()
 
   useEffect(() => {
-    if (!errorPayPalClientId && !isLoadingPayPalClientId && paypalClientId) {
+    if (
+      !errorPayPalClientId &&
+      !isLoadingPayPalClientId &&
+      paypalClientId.clientId
+    ) {
       const loadPayPalScript = async () => {
         paypalDispatch({
           type: 'resetOptions',
           value: {
-            'client-id': paypalClientId.clientId,
+            clientId: paypalClientId.clientId,
             currency: 'USD',
           },
         })
@@ -59,6 +63,38 @@ const OrderScreen = () => {
     paypalClientId,
     paypalDispatch,
   ])
+
+  /** PayPal Button Handlers */
+  const onApproveTest = async (data, actions) => {
+    await payOrder({ orderId, details: { payer: {} } })
+    refetch()
+    toast.success('Payment successful')
+  }
+  const createOrderHandler = (data, actions) => {
+    return actions.order
+      .create({
+        purchase_units: [
+          {
+            amount: {
+              value: order.totalPrice,
+            },
+          },
+        ],
+      })
+      .then((orderId) => orderId)
+  }
+  const onApproveHandler = (data, actions) => {
+    return actions.order.capture().then(async (details) => {
+      try {
+        await payOrder({ orderId, details })
+        refetch()
+        toast.success('Payment successful')
+      } catch (error) {
+        toast.error(error?.data?.message || error?.message)
+      }
+    })
+  }
+  const onErrorHandler = (error) => toast.error(error.message)
 
   return isLoading ? (
     <Loader />
@@ -149,7 +185,31 @@ const OrderScreen = () => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {/* PAY ORDER PLACEHOLDER */}
+              {!order.isPaid && (
+                <ListGroup.Item>
+                  {isLoadingPayPalClientId && <Loader />}
+                  {isPending ? (
+                    <Loader />
+                  ) : (
+                    <div>
+                      <Button
+                        onClick={onApproveTest}
+                        style={{ marginBottom: '10px' }}
+                      >
+                        Test Pay Order
+                      </Button>
+                      <div>
+                        <PayPalButtons
+                          createOrder={createOrderHandler}
+                          onApprove={onApproveHandler}
+                          onError={onErrorHandler}
+                        ></PayPalButtons>
+                      </div>
+                    </div>
+                  )}
+                </ListGroup.Item>
+              )}
+
               {/* MARK AS DELIVERED PLACEHOLDER */}
             </ListGroup>
           </Card>
