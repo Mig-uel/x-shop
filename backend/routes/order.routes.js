@@ -18,10 +18,10 @@ const {
 router.route('/').post(protect, addOrderItems)
 router.route('/myorders').get(protect, getUserOrders)
 router.route('/:id/pay').patch(protect, updateOrderToPaid)
+router.route('/:id').get(protect, getOrderById)
 
 /** Admin Routes */
 router.route('/').get(protect, admin, getAllOrders)
-router.route('/:id').get(protect, admin, getOrderById)
 router.route('/:id/deliver').patch(protect, admin, updateOrderToDelivered)
 
 module.exports = router
