@@ -1,4 +1,5 @@
 const Order = require('../models/order.model')
+const Product = require('../models/product.model')
 const asyncHandler = require('../middleware/asyncHandler.middleware')
 
 /** ------ USER ROUTES ------ */
@@ -92,6 +93,15 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
     }
 
     const updatedOrder = await order.save()
+
+    for (let i in updatedOrder.orderItems) {
+      const item = updatedOrder.orderItems[i]
+      const product = await Product.findById(item.product)
+
+      product.countInStock -= item.qty
+
+      product.save()
+    }
     res.status(200).json(updatedOrder)
   } else {
     res.status(404)
