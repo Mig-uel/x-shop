@@ -7,6 +7,7 @@ import { saveShippingAddress } from '../store/cart/cartSlice'
 import { Row, Col, Form, Button } from 'react-bootstrap'
 import Steps from '../components/steps.component'
 import FormContainer from '../components/form-container.component'
+import { toast } from 'react-toastify'
 
 const ShippingScreen = () => {
   const navigate = useNavigate()
@@ -22,8 +23,13 @@ const ShippingScreen = () => {
 
   const submitHandler = (e) => {
     e.preventDefault()
-    dispatch(saveShippingAddress({ address, city, postalCode, country }))
-    navigate('/payment')
+
+    if (!address || !city || !postalCode || !country) {
+      toast.error('Please fill out missing fields')
+    } else {
+      dispatch(saveShippingAddress({ address, city, postalCode, country }))
+      navigate('/payment')
+    }
   }
 
   return (
