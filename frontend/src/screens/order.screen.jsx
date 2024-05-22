@@ -15,8 +15,6 @@ const OrderScreen = () => {
     error,
   } = useGetOrderDetailsQuery(orderId)
 
-  console.log(order)
-
   return isLoading ? (
     <Loader />
   ) : error ? (
