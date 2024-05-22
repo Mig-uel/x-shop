@@ -7,6 +7,7 @@ const connectDB = require('./config/db')
 // routers
 const productRoutes = require('./routes/product.routes')
 const userRoutes = require('./routes/user.routes')
+const orderRoutes = require('./routes/order.routes')
 
 // middleware
 const { notFound, errorHandler } = require('./middleware/error.middleware')
@@ -24,6 +25,7 @@ app.use(cookieParser()) // cookie parser
 // main api routes
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
+app.use('/api/orders', orderRoutes)
 
 // custom error handler
 app.use(notFound)
