@@ -45,7 +45,6 @@ const PlaceOrderScreen = () => {
         totalPrice,
       }).unwrap()
 
-      console.log(res)
       dispatch(clearCartItems())
       navigate(`/orders/${res._id}`)
     } catch (error) {
@@ -93,7 +92,8 @@ const PlaceOrderScreen = () => {
                           <Link to={`/product/${item._id}`}>{item.name}</Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item.qty} x ${item.price} = $
+                          {(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
                     </ListGroup.Item>
