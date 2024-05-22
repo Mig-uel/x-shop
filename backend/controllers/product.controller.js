@@ -1,14 +1,12 @@
 const Product = require('../models/product.model')
 const asyncHandler = require('../middleware/asyncHandler.middleware')
 
-/** -------- USER ROUTES -------- **/
-
+/** ------ USER ROUTES ------ */
 /**
  * @desc    Get all products
  * @route   GET /api/products
  * @access  Public
  */
-
 const getProducts = asyncHandler(async (req, res) => {
   const products = await Product.find({})
 
