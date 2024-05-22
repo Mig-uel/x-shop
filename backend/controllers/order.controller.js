@@ -49,7 +49,10 @@ const addOrderItems = asyncHandler(async (req, res) => {
  * @access  Private
  */
 const getUserOrders = asyncHandler(async (req, res) => {
-  res.send('get user orders')
+  const { _id } = req.user
+
+  const orders = await Order.find({ user: _id })
+  res.status(200).json(orders)
 })
 
 /**
