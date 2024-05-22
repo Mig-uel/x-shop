@@ -23,7 +23,35 @@ const PlaceOrderScreen = () => {
     else if (!cart.paymentMethod) navigate('/payment')
   }, [cart.shippingAddress.address, cart.paymentMethod, navigate])
 
-  const placeOrderHandler = () => {}
+  const placeOrderHandler = async () => {
+    try {
+      const {
+        cartItems,
+        shippingAddress,
+        paymentMethod,
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+      } = cart
+
+      const res = await placeOrder({
+        orderItems: cartItems,
+        shippingAddress,
+        paymentMethod,
+        itemsPrice,
+        shippingPrice,
+        taxPrice,
+        totalPrice,
+      }).unwrap()
+
+      console.log(res)
+      dispatch(clearCartItems())
+      navigate(`/orders/${res._id}`)
+    } catch (error) {
+      toast.error(error?.data?.message || error?.error)
+    }
+  }
 
   return (
     <>
@@ -107,10 +135,11 @@ const PlaceOrderScreen = () => {
                   <Col>${cart.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-
               {error && (
                 <ListGroup.Item>
-                  <Message variant='danger'>{error}</Message>
+                  <Message variant='danger'>
+                    {error?.data?.message || error?.error}
+                  </Message>{' '}
                 </ListGroup.Item>
               )}
 
