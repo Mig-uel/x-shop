@@ -19,10 +19,8 @@ const ProductListScreen = () => {
     error: errorProducts,
     refetch,
   } = useGetProductsQuery()
-  const [
-    createProduct,
-    { isLoading: isLoadingCreateProduct, error: errorCreateProduct },
-  ] = useCreateProductMutation()
+  const [createProduct, { isLoading: isLoadingCreateProduct }] =
+    useCreateProductMutation()
 
   const deleteProductHandler = (productId) => {
     console.log(productId)
@@ -46,7 +44,11 @@ const ProductListScreen = () => {
           <h1>Products</h1>
         </Col>
         <Col className='text-end'>
-          <Button className='btn-sm m-3' onClick={createProductHandler}>
+          <Button
+            className='btn-sm m-3'
+            onClick={createProductHandler}
+            disabled={isLoadingCreateProduct}
+          >
             <FaEdit /> Create Product
           </Button>
         </Col>
