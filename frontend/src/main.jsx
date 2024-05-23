@@ -30,7 +30,7 @@ import PlaceOrderScreen from './screens/place-order.screen.jsx'
 import OrderScreen from './screens/order.screen.jsx'
 import ProfileScreen from './screens/profile.screen.jsx'
 import AdminRoute from './components/admin-route.component.jsx'
-import OrderListScreen from './screens/order-list.screen.jsx'
+import OrderListScreen from './screens/admin/order-list.screen.jsx'
 
 const router = createBrowserRouter(
   createRoutesFromElements(
