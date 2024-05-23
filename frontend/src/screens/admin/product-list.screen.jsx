@@ -1,18 +1,42 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useGetProductsQuery } from '../../store/api/productsEndpoints.api'
+import {
+  useGetProductsQuery,
+  useCreateProductMutation,
+} from '../../store/api/productsEndpoints.api'
 import { LinkContainer } from 'react-router-bootstrap'
 
 /** UI Elements */
+import { toast } from 'react-toastify'
 import { FaTimes, FaEdit, FaTrash } from 'react-icons/fa'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import Message from '../../components/message.component'
 import Loader from '../../components/loader.component'
 
 const ProductListScreen = () => {
-  const { data: products, isLoading, error } = useGetProductsQuery()
+  const {
+    data: products,
+    isLoading: isLoadingProducts,
+    error: errorProducts,
+    refetch,
+  } = useGetProductsQuery()
+  const [
+    createProduct,
+    { isLoading: isLoadingCreateProduct, error: errorCreateProduct },
+  ] = useCreateProductMutation()
 
   const deleteProductHandler = (productId) => {
     console.log(productId)
+  }
+
+  const createProductHandler = async () => {
+    if (window.confirm('Are you sure you want to create a new product?')) {
+      try {
+        await createProduct()
+        refetch()
+      } catch (error) {
+        toast.error(error?.data?.message || error?.error)
+      }
+    }
   }
 
   return (
@@ -22,15 +46,15 @@ const ProductListScreen = () => {
           <h1>Products</h1>
         </Col>
         <Col className='text-end'>
-          <Button className='btn-sm m-3'>
+          <Button className='btn-sm m-3' onClick={createProductHandler}>
             <FaEdit /> Create Product
           </Button>
         </Col>
       </Row>
-      {isLoading ? (
+      {isLoadingProducts ? (
         <Loader />
-      ) : error ? (
-        <Message variant='danger'>{error}</Message>
+      ) : errorProducts ? (
+        <Message variant='danger'>{errorProducts}</Message>
       ) : (
         <>
           <Table striped hover responsive className='table-sm'>
