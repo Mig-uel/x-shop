@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const colors = require('colors')
@@ -8,6 +9,7 @@ const connectDB = require('./config/db')
 const productRoutes = require('./routes/product.routes')
 const userRoutes = require('./routes/user.routes')
 const orderRoutes = require('./routes/order.routes')
+const uploadRoutes = require('./routes/upload.routes')
 
 // middleware
 const { notFound, errorHandler } = require('./middleware/error.middleware')
@@ -26,10 +28,13 @@ app.use(cookieParser()) // cookie parser
 app.use('/api/products', productRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/orders', orderRoutes)
+app.use('/api/uploads', uploadRoutes)
 
 app.get('/api/config/paypal', (req, res) =>
   res.send({ clientId: process.env.PAYPAL_CLIENT_ID })
 )
+
+app.use('/uploads', express.static(path.join(path.resolve(), '/uploads')))
 
 // custom error handler
 app.use(notFound)
