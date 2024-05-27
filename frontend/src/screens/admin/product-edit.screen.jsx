@@ -24,12 +24,7 @@ const ProductEditScreen = () => {
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
 
-  const {
-    data: product,
-    isLoading,
-    refetch,
-    error,
-  } = useGetProductByIdQuery(productId)
+  const { data: product, isLoading, error } = useGetProductByIdQuery(productId)
 
   const [updateProduct, { isLoading: isLoadingUpdateProduct }] =
     useUpdateProductMutation()
@@ -63,7 +58,7 @@ const ProductEditScreen = () => {
     if (res.error) toast.error(res.error)
     else {
       toast.success('Product updated')
-      refetch()
+      navigate('/admin/productlist')
     }
   }
 
