@@ -14,24 +14,29 @@ const storage = multer.diskStorage({
   },
 })
 
-const checkFileType = (file, cb) => {
-  const fileTypes = /jpg|jpeg|png/ // ReGex
+const checkFileType = (req, file, cb) => {
+  const fileTypes = /jpg|jpeg|png/
+  const mimeTypes = /image\/jpe?g|image\/png|image\/webp/
 
   const extName = fileTypes.test(path.extname(file.originalname).toLowerCase())
+  const mimeType = mimeTypes.test(file.mimetype)
 
-  const mimetype = fileTypes.test(file.mimetype)
-
-  if (extName && mineType) return cb(null, true)
-  else cb('Images only.')
+  if (extName && mimeType) cb(null, true)
+  else cb(new Error('File is not an image.'), false)
 }
 
-const upload = multer({ storage })
+const upload = multer({ storage, checkFileType })
+const uploadSingleImage = upload.single('image')
 
 /** UPLOAD ROUTE */
-router.post('/', upload.single('image'), (req, res) =>
-  res
-    .status(202)
-    .json({ message: 'Image uploaded', Image: `/${req.file.path}` })
-)
+router.post('/', (req, res) => {
+  uploadSingleImage(req, res, function (err) {
+    if (err) return res.status(400).json({ message: err.message })
+
+    res
+      .status(200)
+      .json({ message: 'Image uploaded.', image: `/${req.file.path}` })
+  })
+})
 
 module.exports = router
