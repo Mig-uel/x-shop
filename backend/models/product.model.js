@@ -80,6 +80,10 @@ const productSchema = new mongoose.Schema(
       default: 0,
       min: 0,
     },
+    category: {
+      type: String,
+      require: false,
+    },
   },
   { timestamps: true }
 )
