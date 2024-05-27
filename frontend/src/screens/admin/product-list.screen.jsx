@@ -7,7 +7,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 
 /** UI Elements */
 import { toast } from 'react-toastify'
-import { FaTimes, FaEdit, FaTrash } from 'react-icons/fa'
+import { FaEdit, FaTrash } from 'react-icons/fa'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import Message from '../../components/message.component'
 import Loader from '../../components/loader.component'
