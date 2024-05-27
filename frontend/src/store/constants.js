@@ -44,4 +44,4 @@ export const PAYPAL_URL = '/api/config/paypal'
  *
  * @constant {string}
  */
-export const UPLOADS_URL = '/api/upload'
+export const UPLOADS_URL = '/api/uploads'
