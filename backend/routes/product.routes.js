@@ -9,6 +9,7 @@ const {
   getProducts,
   getSingleProduct,
   createProduct,
+  updateProduct,
 } = require('../controllers/product.controller')
 
 /** USER ROUTES */
@@ -17,5 +18,6 @@ router.route('/:id').get(getSingleProduct)
 
 /** ADMIN ROUTES */
 router.route('/').post(protect, admin, createProduct)
+router.route('/:id').patch(protect, admin, updateProduct)
 
 module.exports = router
