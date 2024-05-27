@@ -1,5 +1,5 @@
-const multer = require('multer')
 const path = require('path')
+const multer = require('multer')
 const router = require('express').Router()
 
 const storage = multer.diskStorage({
@@ -9,13 +9,13 @@ const storage = multer.diskStorage({
   filename(req, file, cb) {
     cb(
       null,
-      `${file.fieldname}-${(Date, now())}${path.extname(file.originalname)}`
+      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
     )
   },
 })
 
-const checkFileType = (req, file, cb) => {
-  const fileTypes = /jpg|jpeg|png/
+const fileFilter = (req, file, cb) => {
+  const fileTypes = /jpe?g|png|webp/
   const mimeTypes = /image\/jpe?g|image\/png|image\/webp/
 
   const extName = fileTypes.test(path.extname(file.originalname).toLowerCase())
@@ -25,7 +25,7 @@ const checkFileType = (req, file, cb) => {
   else cb(new Error('File is not an image.'), false)
 }
 
-const upload = multer({ storage, checkFileType })
+const upload = multer({ storage, fileFilter })
 const uploadSingleImage = upload.single('image')
 
 /** UPLOAD ROUTE */
