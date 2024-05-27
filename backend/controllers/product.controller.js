@@ -28,6 +28,7 @@ const getSingleProduct = asyncHandler(async (req, res) => {
   throw new Error('Product not found')
 })
 
+/** ------ ADMIN ROUTES ------ */
 /**
  * @desc    Create a product
  * @route   POST /api/products
@@ -50,4 +51,33 @@ const createProduct = asyncHandler(async (req, res) => {
   res.status(201).json(createdProduct)
 })
 
-module.exports = { getProducts, getSingleProduct, createProduct }
+/**
+ * @desc    Update a product
+ * @route   PATCH /api/products/:id
+ * @access  Private/Admin
+ */
+const updateProduct = asyncHandler(async (req, res) => {
+  const { id } = req.params
+  const { name, price, description, image, brand, category, countInStock } =
+    req.body
+
+  const product = await Product.findById(id)
+
+  if (product) {
+    product.name = name
+    product.price = price
+    product.description = description
+    product.image = image
+    product.brand = brand
+    product.category = category
+    product.countInStock = countInStock
+
+    const updatedProduct = await product.save()
+    res.status(200).json(updateProduct)
+  } else {
+    res.status(404)
+    throw new Error('Product not found')
+  }
+})
+
+module.exports = { getProducts, getSingleProduct, createProduct, updateProduct }
