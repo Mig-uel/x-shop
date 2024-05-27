@@ -38,3 +38,10 @@ export const ORDERS_URL = '/api/orders'
  * @constant {string}
  */
 export const PAYPAL_URL = '/api/config/paypal'
+
+/**
+ * The URL for the image uploads
+ *
+ * @constant {string}
+ */
+export const UPLOADS_URL = '/api/upload'
