@@ -130,6 +130,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
  */
 const getUserById = asyncHandler(async (req, res) => {
   const { id } = req.params
+  console.log(req.user)
 
   const user = await User.findById(id).select('-password')
 
@@ -176,7 +177,9 @@ const updateUser = asyncHandler(async (req, res) => {
   if (user) {
     user.name = req.body.name || user.name
     user.email = req.body.email || user.email
-    user.isAdmin = Boolean(req.body.isAdmin)
+    user.isAdmin = req.user._id.equals(id)
+      ? user.isAdmin
+      : Boolean(req.body.isAdmin)
 
     const updatedUser = await user.save()
 
