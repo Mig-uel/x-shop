@@ -97,7 +97,7 @@ const UserEditScreen = () => {
                 label='Is Admin?'
                 type='checkbox'
                 checked={isAdmin}
-                onChange={(e) => setIsAdmin(e.target.value)}
+                onChange={(e) => setIsAdmin(e.target.checked)}
               />
             </Form.Group>
 
