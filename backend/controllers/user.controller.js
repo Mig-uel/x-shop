@@ -119,7 +119,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
  * @access  Private/Admin
  */
 const getAllUsers = asyncHandler(async (req, res) => {
-  res.status(200).json({ admin: 'get users route' })
+  const users = await User.find({})
+  res.status(200).json(users)
 })
 
 /**
@@ -130,7 +131,13 @@ const getAllUsers = asyncHandler(async (req, res) => {
 const getUserById = asyncHandler(async (req, res) => {
   const { id } = req.params
 
-  res.status(200).json({ admin: 'get user by id route', id })
+  const user = await User.findById(id).select('-password')
+
+  if (user) res.status(200).json(user)
+  else {
+    res.status(404)
+    throw new Error('User not found')
+  }
 })
 
 /**
@@ -141,7 +148,19 @@ const getUserById = asyncHandler(async (req, res) => {
 const deleteUser = asyncHandler(async (req, res) => {
   const { id } = req.params
 
-  res.status(200).json({ admin: 'delete user route', id })
+  const user = await User.findById(id)
+
+  if (user) {
+    if (user.isAdmin) {
+      res.status(400)
+      throw new Error('Cannot delete admin user')
+    }
+    await User.deleteOne({ _id: user._id })
+    res.status(200).json({ message: `User ${user._id} deleted` })
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
 })
 
 /**
@@ -152,7 +171,26 @@ const deleteUser = asyncHandler(async (req, res) => {
 const updateUser = asyncHandler(async (req, res) => {
   const { id } = req.params
 
-  res.status(200).json({ admin: 'update user route', id })
+  const user = await User.findById(id)
+
+  if (user) {
+    user.name = req.body.name || user.name
+    user.email = req.body.email || user.email
+    user.isAdmin = Boolean(req.body.isAdmin)
+
+    const updatedUser = await user.save()
+
+    res.status(200).json({
+      message: 'User updated',
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    })
+  } else {
+    res.status(404)
+    throw new Error('User not found')
+  }
 })
 
 module.exports = {
