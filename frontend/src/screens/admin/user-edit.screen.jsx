@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import {
-  useGetProductByIdQuery,
-  useUpdateProductMutation,
-  useUploadProductImageMutation,
-} from '../../store/api/productsEndpoints.api'
+  useGetUserDetailsQuery,
+  useUpdateUserMutation,
+} from '../../store/api/usersEndpoints.api'
 
 /** UI Elements */
 import { toast } from 'react-toastify'
@@ -14,67 +13,47 @@ import FormContainer from '../../components/form-container.component'
 import { Form, Button, InputGroup } from 'react-bootstrap'
 
 const UserEditScreen = () => {
-  const { id: productId } = useParams()
+  const { id: userId } = useParams()
   const navigate = useNavigate()
 
   const [name, setName] = useState('')
-  const [price, setPrice] = useState(0)
-  const [image, setImage] = useState('')
-  const [brand, setBrand] = useState('')
-  const [category, setCategory] = useState('')
-  const [countInStock, setCountInStock] = useState(0)
-  const [description, setDescription] = useState('')
+  const [email, setEmail] = useState('')
+  const [isAdmin, setIsAdmin] = useState(false)
 
-  const { data: product, isLoading, error } = useGetProductByIdQuery(productId)
+  const {
+    data: user,
+    isLoading: isLoadingUserDetails,
+    refetch,
+    error,
+  } = useGetUserDetailsQuery(userId)
 
-  const [updateProduct, { isLoading: isLoadingUpdateProduct }] =
-    useUpdateProductMutation()
-  const [uploadProductImage, { isLoading: isLoadingUploadProductImage }] =
-    useUploadProductImageMutation()
+  const [updateUser, { isLoading: isLoadingUpdateUser }] =
+    useUpdateUserMutation()
 
   useEffect(() => {
-    if (product) {
-      setName(product.name)
-      setPrice(product.price)
-      setImage(product.image)
-      setBrand(product.brand)
-      setCategory(product.category || '')
-      setCountInStock(product.countInStock)
-      setDescription(product.description)
+    if (user) {
+      setName(user.name)
+      setEmail(user.email)
+      setIsAdmin(user.isAdmin)
     }
-  }, [product])
+  }, [user])
 
-  const updateProductHandler = async (e) => {
+  const updateUserHandler = async (e) => {
     e.preventDefault()
-    const updatedProduct = {
-      productId,
+    const updatedUser = {
+      userId,
       name,
-      price,
-      image,
-      brand,
-      category,
-      countInStock,
-      description,
+      email,
+      isAdmin,
     }
-
-    const res = await updateProduct(updatedProduct)
-    if (res.error) toast.error(res.error)
-    else {
-      toast.success('Product updated')
-      navigate('/admin/productlist')
-    }
-  }
-
-  const uploadImageHandler = async (e) => {
-    const formData = new FormData()
-    formData.append('image', e.target.files[0])
 
     try {
-      const res = await uploadProductImage(formData).unwrap()
+      const res = await updateUser(updatedUser).unwrap()
       toast.success(res.message)
-      setImage(res.image)
+      refetch()
+      navigate('/admin/userlist')
     } catch (error) {
-      toast.error(error?.data?.message || error?.error)
+      toast.error(error?.data?.error || error?.error)
     }
   }
 
@@ -85,16 +64,16 @@ const UserEditScreen = () => {
       </Link>
 
       <FormContainer>
-        <h1>Edit Product</h1>
+        <h1>Edit User</h1>
 
-        {isLoading ? (
+        {isLoadingUserDetails ? (
           <Loader />
         ) : error ? (
           <Message variant='danger'>
             {error?.data?.message || error?.error}
           </Message>
         ) : (
-          <Form onSubmit={updateProductHandler}>
+          <Form onSubmit={updateUserHandler}>
             <Form.Group controlId='name'>
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -104,64 +83,21 @@ const UserEditScreen = () => {
                 onChange={(e) => setName(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId='price' className='my-2'>
+            <Form.Group controlId='email' className='my-2'>
               <Form.Label>Price</Form.Label>
-              <InputGroup>
-                <InputGroup.Text id='basic-addon1'>$</InputGroup.Text>
-                <Form.Control
-                  type='number'
-                  placeholder='Enter price'
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                />
-              </InputGroup>
-            </Form.Group>
-            <Form.Group controlId='image' className='my-2'>
-              <Form.Label>Image</Form.Label>
               <Form.Control
-                readOnly
-                type='text'
-                placeholder='Enter image url'
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              />
-              <Form.Control type='file' onChange={uploadImageHandler} />
-            </Form.Group>
-            <Form.Group controlId='brand' className='my-2'>
-              <Form.Label>Brand</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter brand'
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
+                type='email'
+                placeholder='Enter price'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </Form.Group>
-            <Form.Group controlId='countInStock' className='my-2'>
-              <Form.Label>Count In Stock</Form.Label>
-              <Form.Control
-                type='number'
-                placeholder='Enter count in stock'
-                value={countInStock}
-                onChange={(e) => setCountInStock(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId='category' className='my-2'>
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter category'
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              />
-            </Form.Group>
-            <Form.Group controlId='description' className='my-2'>
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                as='textarea'
-                rows={3}
-                placeholder='Enter description'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+            <Form.Group controlId='isAdmin' className='my-2'>
+              <Form.Check
+                label='Is Admin?'
+                type='checkbox'
+                checked={isAdmin}
+                onChange={(e) => setIsAdmin(e.target.value)}
               />
             </Form.Group>
 
@@ -169,9 +105,9 @@ const UserEditScreen = () => {
               type='submit'
               variant='primary'
               className='my-2'
-              disabled={isLoadingUpdateProduct}
+              disabled={isLoadingUpdateUser}
             >
-              {isLoadingUpdateProduct ? (
+              {isLoadingUpdateUser ? (
                 <Loader width='25px' height='25px' />
               ) : (
                 'Update'
