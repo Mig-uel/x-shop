@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import {
   useGetProductsQuery,
   useCreateProductMutation,
+  useDeleteProductMutation,
 } from '../../store/api/productsEndpoints.api'
 import { LinkContainer } from 'react-router-bootstrap'
 
@@ -19,11 +20,22 @@ const ProductListScreen = () => {
     error: errorProducts,
     refetch,
   } = useGetProductsQuery()
+
   const [createProduct, { isLoading: isLoadingCreateProduct }] =
     useCreateProductMutation()
+  const [deleteProduct, { isLoading: isLoadingDeleteProduct }] =
+    useDeleteProductMutation()
 
-  const deleteProductHandler = (productId) => {
-    console.log(productId)
+  const deleteProductHandler = async (id) => {
+    if (window.confirm('Are you sure you want to delete?')) {
+      try {
+        const res = await deleteProduct(id).unwrap()
+        toast.success(res.message)
+        refetch()
+      } catch (error) {
+        toast.error(error?.data?.message || error?.error)
+      }
+    }
   }
 
   const createProductHandler = async () => {
