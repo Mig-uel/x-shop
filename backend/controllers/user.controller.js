@@ -130,7 +130,6 @@ const getAllUsers = asyncHandler(async (req, res) => {
  */
 const getUserById = asyncHandler(async (req, res) => {
   const { id } = req.params
-  console.log(req.user)
 
   const user = await User.findById(id).select('-password')
 
