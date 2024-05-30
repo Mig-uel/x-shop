@@ -73,7 +73,7 @@ const updateProduct = asyncHandler(async (req, res) => {
     product.countInStock = countInStock
 
     const updatedProduct = await product.save()
-    res.status(200).json(updateProduct)
+    res.status(200).json(updatedProduct)
   } else {
     res.status(404)
     throw new Error('Product not found')
@@ -90,7 +90,7 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const product = await Product.findById(id)
 
   if (product) {
-    await Product.findOne({ _id: product._id })
+    await Product.deleteOne({ _id: product._id })
     res.status(200).json({ message: 'Product deleted' })
   } else {
     res.status(404)
