@@ -11,11 +11,13 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
+  createProductReview,
 } = require('../controllers/product.controller')
 
 /** USER ROUTES */
 router.route('/').get(getProducts)
 router.route('/:id').get(getSingleProduct)
+router.route('/:id/reviews').post(protect, createProductReview)
 
 /** ADMIN ROUTES */
 router.route('/').post(protect, admin, createProduct)
