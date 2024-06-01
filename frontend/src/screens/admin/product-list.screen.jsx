@@ -5,7 +5,7 @@ import {
   useDeleteProductMutation,
 } from '../../store/api/productsEndpoints.api'
 import { LinkContainer } from 'react-router-bootstrap'
-import { useParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 /** UI Elements */
 import { toast } from 'react-toastify'
@@ -16,7 +16,9 @@ import Loader from '../../components/loader.component'
 import Paginate from '../../components/paginate.component'
 
 const ProductListScreen = () => {
-  const { pageNumber } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const pageNumber = searchParams.get('pageNumber')
+
   const {
     data,
     isLoading: isLoadingProducts,
