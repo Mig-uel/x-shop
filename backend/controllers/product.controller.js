@@ -8,7 +8,7 @@ const asyncHandler = require('../middleware/asyncHandler.middleware')
  * @access  Public
  */
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 2
+  const pageSize = 4
   const { pageNumber } = req.query
   const page = Number(pageNumber) || 1
   const count = await Product.countDocuments()
