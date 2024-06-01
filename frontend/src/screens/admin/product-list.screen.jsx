@@ -5,6 +5,7 @@ import {
   useDeleteProductMutation,
 } from '../../store/api/productsEndpoints.api'
 import { LinkContainer } from 'react-router-bootstrap'
+import { useParams } from 'react-router-dom'
 
 /** UI Elements */
 import { toast } from 'react-toastify'
@@ -12,14 +13,16 @@ import { FaEdit, FaTrash } from 'react-icons/fa'
 import { Table, Button, Row, Col } from 'react-bootstrap'
 import Message from '../../components/message.component'
 import Loader from '../../components/loader.component'
+import Paginate from '../../components/paginate.component'
 
 const ProductListScreen = () => {
+  const { pageNumber } = useParams()
   const {
-    data: products,
+    data,
     isLoading: isLoadingProducts,
     error: errorProducts,
     refetch,
-  } = useGetProductsQuery()
+  } = useGetProductsQuery({ pageNumber })
 
   const [createProduct, { isLoading: isLoadingCreateProduct }] =
     useCreateProductMutation()
@@ -83,7 +86,7 @@ const ProductListScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {data.products.map((product) => (
                 <tr key={product._id}>
                   <td>{product._id}</td>
                   <td>{product.name}</td>
@@ -108,6 +111,7 @@ const ProductListScreen = () => {
               ))}
             </tbody>
           </Table>
+          <Paginate page={data.page} pages={data.pages} isAdmin={true} />
         </>
       )}
     </>
