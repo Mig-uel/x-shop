@@ -1,5 +1,5 @@
 import { useGetProductsQuery } from '../store/api/productsEndpoints.api'
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 
 // UI Components
 import { Row, Col } from 'react-bootstrap'
@@ -10,9 +10,15 @@ import Paginate from '../components/paginate.component'
 
 const HomeScreen = () => {
   const [searchParams, setSearchParams] = useSearchParams()
+
+  // search params
+  const keyword = searchParams.get('keyword') || ''
   const pageNumber = searchParams.get('pageNumber')
 
-  const { data, isLoading, error } = useGetProductsQuery({ pageNumber })
+  const { data, isLoading, error } = useGetProductsQuery({
+    keyword,
+    pageNumber,
+  })
 
   return (
     <>
@@ -33,7 +39,11 @@ const HomeScreen = () => {
               </Col>
             ))}
           </Row>
-          <Paginate pages={data.pages} page={data.page} />
+          <Paginate
+            pages={data.pages}
+            page={data.page}
+            keyword={keyword ? keyword : ''}
+          />
         </>
       )}
     </>
