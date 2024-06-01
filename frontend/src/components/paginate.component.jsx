@@ -1,15 +1,15 @@
 import { Pagination } from 'react-bootstrap'
-import { useSearchParams, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
-const Paginate = ({ pages, page, isAdmin = false }) => {
+const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
   const navigate = useNavigate()
-  const [searchParams, setSearchParams] = useSearchParams()
 
   const searchParamsHandler = (path, p) => {
-    setSearchParams('pageNumber', p)
     navigate({
       pathname: path,
-      search: `?pageNumber=${p}`,
+      search: !keyword
+        ? `?pageNumber=${p}`
+        : `?keyword=${keyword}&pageNumber=${p}`,
     })
   }
 
@@ -22,7 +22,11 @@ const Paginate = ({ pages, page, isAdmin = false }) => {
               active={p + 1 === page}
               onClick={() =>
                 searchParamsHandler(
-                  !isAdmin ? `/` : `/admin/productlist/`,
+                  !isAdmin
+                    ? keyword
+                      ? '/search/'
+                      : `/`
+                    : `/admin/productlist/`,
                   p + 1
                 )
               }
