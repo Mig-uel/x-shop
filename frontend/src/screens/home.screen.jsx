@@ -1,5 +1,5 @@
 import { useGetProductsQuery } from '../store/api/productsEndpoints.api'
-import { useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 
 // UI Components
 import { Row, Col } from 'react-bootstrap'
@@ -23,7 +23,6 @@ const HomeScreen = () => {
   return (
     <>
       <h1>Latest Products</h1>
-
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -32,7 +31,18 @@ const HomeScreen = () => {
         </Message>
       ) : (
         <>
+          {keyword && data.products.length > 0 && (
+            <Link to='/' className='btn btn-light mb-4 mt-1'>
+              Go Back
+            </Link>
+          )}
+
           <Row>
+            {data.products.length === 0 && (
+              <Message variant='danger'>
+                You look lost... Come back <Link to='/'>Home</Link>
+              </Message>
+            )}
             {data.products.map((product) => (
               <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
                 <Product product={product} />
