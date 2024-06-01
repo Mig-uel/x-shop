@@ -22,11 +22,7 @@ const Paginate = ({ pages, page, isAdmin = false, keyword = '' }) => {
               active={p + 1 === page}
               onClick={() =>
                 searchParamsHandler(
-                  !isAdmin
-                    ? keyword
-                      ? '/search/'
-                      : `/`
-                    : `/admin/productlist/`,
+                  !isAdmin ? (keyword ? '/search' : `/`) : `/admin/productlist`,
                   p + 1
                 )
               }
