@@ -7,7 +7,7 @@ import Loader from '../components/loader.component'
 import Message from '../components/message.component'
 
 const HomeScreen = () => {
-  const { data: products, isLoading, error } = useGetProductsQuery()
+  const { data, isLoading, error } = useGetProductsQuery()
 
   return (
     <>
@@ -21,7 +21,7 @@ const HomeScreen = () => {
         </Message>
       ) : (
         <Row>
-          {products.map((product) => (
+          {data.products.map((product) => (
             <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
               <Product product={product} />
             </Col>
