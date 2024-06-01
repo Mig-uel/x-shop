@@ -1,5 +1,5 @@
 import { useGetProductsQuery } from '../store/api/productsEndpoints.api'
-import { useParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom'
 
 // UI Components
 import { Row, Col } from 'react-bootstrap'
@@ -9,7 +9,9 @@ import Message from '../components/message.component'
 import Paginate from '../components/paginate.component'
 
 const HomeScreen = () => {
-  const { pageNumber } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const pageNumber = searchParams.get('pageNumber')
+
   const { data, isLoading, error } = useGetProductsQuery({ pageNumber })
 
   return (
