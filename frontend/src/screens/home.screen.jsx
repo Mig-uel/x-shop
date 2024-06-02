@@ -2,6 +2,7 @@ import { useGetProductsQuery } from '../store/api/productsEndpoints.api'
 import { Link, useSearchParams } from 'react-router-dom'
 
 // UI Components
+import Meta from '../components/meta.component'
 import { Row, Col } from 'react-bootstrap'
 import Product from '../components/product.component'
 import Loader from '../components/loader.component'
@@ -23,7 +24,7 @@ const HomeScreen = () => {
 
   return (
     <>
-      <h1>Latest Products</h1>
+      <Meta />
       {isLoading ? (
         <Loader />
       ) : error ? (
@@ -41,7 +42,10 @@ const HomeScreen = () => {
               You look lost... Come back <Link to='/'>Home</Link>
             </Message>
           ) : (
-            <ProductCarousel />
+            <>
+              <ProductCarousel />
+              <h1>Latest Products</h1>
+            </>
           )}
 
           <Row>
