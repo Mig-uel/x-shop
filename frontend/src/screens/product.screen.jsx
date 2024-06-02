@@ -8,6 +8,7 @@ import { addToCart } from '../store/cart/cartSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
 // UI Components
+import Meta from '../components/meta.component'
 import { Row, Col, Image, ListGroup, Card, Button, Form } from 'react-bootstrap'
 import Rating from '../components/rating.component'
 import Loader from '../components/loader.component'
@@ -74,6 +75,7 @@ const ProductScreen = () => {
         </Message>
       ) : (
         <>
+          <Meta title={product.name} description={product.description} />
           <Row>
             <Col md={5}>
               <Image src={product.image} alt={product.name} fluid />
