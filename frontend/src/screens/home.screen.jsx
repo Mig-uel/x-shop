@@ -7,6 +7,7 @@ import Product from '../components/product.component'
 import Loader from '../components/loader.component'
 import Message from '../components/message.component'
 import Paginate from '../components/paginate.component'
+import ProductCarousel from '../components/product-carousel.component'
 
 const HomeScreen = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -31,18 +32,19 @@ const HomeScreen = () => {
         </Message>
       ) : (
         <>
-          {keyword && data.products.length > 0 && (
+          {keyword && data.products.length > 0 ? (
             <Link to='/' className='btn btn-light mb-4 mt-1'>
               Go Back
             </Link>
+          ) : data.products.length === 0 ? (
+            <Message variant='danger'>
+              You look lost... Come back <Link to='/'>Home</Link>
+            </Message>
+          ) : (
+            <ProductCarousel />
           )}
 
           <Row>
-            {data.products.length === 0 && (
-              <Message variant='danger'>
-                You look lost... Come back <Link to='/'>Home</Link>
-              </Message>
-            )}
             {data.products.map((product) => (
               <Col sm={12} md={6} lg={4} xl={3} key={product._id}>
                 <Product product={product} />
