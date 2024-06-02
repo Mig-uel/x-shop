@@ -84,10 +84,10 @@ const UserEditScreen = () => {
               />
             </Form.Group>
             <Form.Group controlId='email' className='my-2'>
-              <Form.Label>Price</Form.Label>
+              <Form.Label>Email</Form.Label>
               <Form.Control
                 type='email'
-                placeholder='Enter price'
+                placeholder='Enter email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
