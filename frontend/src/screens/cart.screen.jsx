@@ -73,7 +73,8 @@ const CartScreen = () => {
         <Card>
           <ListGroup variant='flush'>
             <ListGroup.Item>
-              <h2>Subtotal ({totalItems}) Items</h2>${itemsPrice}
+              <h2>Subtotal ({totalItems}) Items</h2>
+              {itemsPrice && `$${itemsPrice}`}
             </ListGroup.Item>
             <ListGroup.Item>
               <Row>
