@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap'
 import { removeCredentials } from '../store/auth/authSlice'
 import { useLogoutMutation } from '../store/api/usersEndpoints.api'
+import { resetCart } from '../store/cart/cartSlice'
 
 // UI Components
 import SearchBox from './search-box.component'
@@ -22,6 +23,7 @@ const Header = () => {
     try {
       await logout().unwrap()
       dispatch(removeCredentials())
+      dispatch(resetCart())
       navigate('/login')
     } catch (error) {
       console.log(error)
