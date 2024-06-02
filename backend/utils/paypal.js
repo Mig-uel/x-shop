@@ -90,4 +90,4 @@ async function verifyPayPalPayment(paypalTransactionId) {
   }
 }
 
-module.exports = { checkIfNewTransaction, verifyPayPalPayment }
+module.exports = { checkIfNewTransaction, verifyPayPalPaymentT }
