@@ -2,6 +2,7 @@
 const router = require('express').Router()
 
 /** Middleware */
+const checkObjectId = require('../middleware/checkObjectId.middleware')
 const { protect, admin } = require('../middleware/auth.middleware')
 
 /** Product Controllers */
@@ -18,14 +19,14 @@ const {
 /** USER ROUTES */
 router.route('/').get(getProducts)
 router.route('/top').get(getTopProducts)
-router.route('/:id').get(getSingleProduct)
-router.route('/:id/reviews').post(protect, createProductReview)
+router.route('/:id').get(checkObjectId, getSingleProduct)
+router.route('/:id/reviews').post(protect, checkObjectId, createProductReview)
 
 /** ADMIN ROUTES */
 router.route('/').post(protect, admin, createProduct)
 router
   .route('/:id')
-  .patch(protect, admin, updateProduct)
-  .delete(protect, admin, deleteProduct)
+  .patch(protect, admin, checkObjectId, updateProduct)
+  .delete(protect, admin, checkObjectId, deleteProduct)
 
 module.exports = router
