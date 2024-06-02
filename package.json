@@ -23,6 +23,7 @@
     "client": "cd ./frontend && yarn dev",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
     "data:import": "node ./backend/seeder.js",
-    "data:destroy": "node ./backend/seeder.js -d"
+    "data:destroy": "node ./backend/seeder.js -d",
+    "build": "yarn && cd ./frontend && yarn && yarn build"
   }
 }
