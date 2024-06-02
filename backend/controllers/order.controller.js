@@ -1,5 +1,10 @@
 const Order = require('../models/order.model')
 const Product = require('../models/product.model')
+const calcPrices = require('../utils/calcPrices.utils')
+const {
+  verifyPayPalPayment,
+  checkIfNewTransaction,
+} = require('../utils/paypal.utils')
 const asyncHandler = require('../middleware/asyncHandler.middleware')
 
 /** ------ USER ROUTES ------ */
@@ -9,37 +14,47 @@ const asyncHandler = require('../middleware/asyncHandler.middleware')
  * @access  Private
  */
 const addOrderItems = asyncHandler(async (req, res) => {
-  const { _id } = req.user
-  const {
-    orderItems,
-    shippingAddress,
-    paymentMethod,
-    itemsPrice,
-    taxPrice,
-    shippingPrice,
-    totalPrice,
-  } = req.body
+  const { orderItems, shippingAddress, paymentMethod } = req.body
 
-  if (orderItems && orderItems.length == 0) {
+  if (orderItems && orderItems.length === 0) {
     res.status(400)
     throw new Error('No order items')
   } else {
+    // get the ordered items from our database
+    const itemsFromDB = await Product.find({
+      _id: { $in: orderItems.map((x) => x._id) },
+    })
+
+    // map over the order items and use the price from our items from database
+    const dbOrderItems = orderItems.map((itemFromClient) => {
+      const matchingItemFromDB = itemsFromDB.find(
+        (itemFromDB) => itemFromDB._id.toString() === itemFromClient._id
+      )
+      return {
+        ...itemFromClient,
+        product: itemFromClient._id,
+        price: matchingItemFromDB.price,
+        _id: undefined,
+      }
+    })
+
+    // calculate prices
+    const { itemsPrice, taxPrice, shippingPrice, totalPrice } =
+      calcPrices(dbOrderItems)
+
     const order = new Order({
-      user: _id,
+      orderItems: dbOrderItems,
+      user: req.user._id,
       shippingAddress,
       paymentMethod,
       itemsPrice,
       taxPrice,
       shippingPrice,
       totalPrice,
-      orderItems: orderItems.map((item) => ({
-        ...item,
-        product: item._id,
-        _id: undefined,
-      })),
     })
 
     const createdOrder = await order.save()
+
     res.status(201).json(createdOrder)
   }
 })
@@ -79,14 +94,24 @@ const getOrderById = asyncHandler(async (req, res) => {
  * @access  Private
  */
 const updateOrderToPaid = asyncHandler(async (req, res) => {
-  const { id } = req.params
-  const order = await Order.findById(id)
+  const { verified, value } = await verifyPayPalPayment(req.body.id)
+  if (!verified) throw new Error('Payment not verified')
+
+  // check if this transaction has been used before
+  const isNewTransaction = await checkIfNewTransaction(Order, req.body.id)
+  if (!isNewTransaction) throw new Error('Transaction has been used before')
+
+  const order = await Order.findById(req.params.id)
 
   if (order) {
+    // check the correct amount was paid
+    const paidCorrectAmount = order.totalPrice.toString() === value
+    if (!paidCorrectAmount) throw new Error('Incorrect amount paid')
+
     order.isPaid = true
     order.paidAt = Date.now()
     order.paymentResult = {
-      id,
+      id: req.body.id,
       status: req.body.status,
       update_time: req.body.update_time,
       email_address: req.body.payer.email_address,
@@ -94,15 +119,7 @@ const updateOrderToPaid = asyncHandler(async (req, res) => {
 
     const updatedOrder = await order.save()
 
-    for (let i in updatedOrder.orderItems) {
-      const item = updatedOrder.orderItems[i]
-      const product = await Product.findById(item.product)
-
-      product.countInStock -= item.qty
-
-      product.save()
-    }
-    res.status(200).json(updatedOrder)
+    res.json(updatedOrder)
   } else {
     res.status(404)
     throw new Error('Order not found')
