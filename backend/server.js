@@ -38,11 +38,13 @@ app.use('/uploads', express.static(path.join(path.resolve(), '/uploads')))
 
 if (process.env.NODE_ENV === 'production') {
   // set static folder
-  app.use(express.static(path.join(__dirname, '/frontend/build')))
+  app.use(express.static(path.join(path.dirname(__dirname), '/frontend/dist')))
 
   // any route that is not api will be redirected to index.html
   app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    res.sendFile(
+      path.resolve(path.dirname(__dirname), 'frontend', 'dist', 'index.html')
+    )
   )
 } else app.get('/', (req, res) => res.send('API is running...'))
 
