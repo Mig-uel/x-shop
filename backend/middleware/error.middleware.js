@@ -11,12 +11,6 @@ const errorHandler = (error, req, res, next) => {
   // destructure message thrown from error object
   let { message } = error
 
-  // check for Mongoose Bad ObjectId
-  if (error.name === 'CastError' && error.kind === 'ObjectId') {
-    message = 'Resource not found'
-    statusCode = 404
-  }
-
   res.status(statusCode).json({
     statusCode,
     message,
