@@ -13,7 +13,7 @@ import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js'
 import Message from '../components/message.component'
 import Loader from '../components/loader.component'
 import { toast } from 'react-toastify'
-import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap'
+import { Row, Col, ListGroup, Image, Button, Card } from 'react-bootstrap'
 
 const OrderScreen = () => {
   const { id: orderId } = useParams()
